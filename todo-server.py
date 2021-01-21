@@ -32,7 +32,6 @@ def get_tasks():
 @app.route('/add', methods = ['GET', 'POST'])
 def add_task():
     todo = request.json
-    print(todo)
     
     todofile = open(config['todopath'], 'a')
     todofile.write("[{prio}] - {content} - [ ]\n".format(prio=todo['prio'], content=todo['content']))
