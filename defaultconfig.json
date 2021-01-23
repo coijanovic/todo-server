@@ -1,0 +1,5 @@
+{
+    "hostip":"0.0.0.0",
+    "hostport": 8000,
+    "todofile":"/tmp/todo/todo.json"
+}
