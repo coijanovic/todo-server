@@ -65,6 +65,7 @@ def mark_done(content):
     for t in todos:
         if t['content'] == content:
             t['done'] = True
+            t['time']['edited'] = int(time.time())
     write_todos(todos)
     return Response('done\n', mimetype='text/plain')
 
