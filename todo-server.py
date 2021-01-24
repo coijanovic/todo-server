@@ -24,12 +24,6 @@ def write_todos(data):
     with open(config['todofile'], "w") as f:
         json.dump(data, f)
 
-def format_todos(todos):
-    ret = ""
-    for i in todos:
-        ret += "[{p}] - {c}\n".format(p=i['prio'],c=i['content'])
-    return ret
-
 @app.route('/')
 def index():
     msg = 'web version wip'
@@ -40,12 +34,13 @@ def get_open_todos():
     todos = get_todos()
     open_todos = [ t for t in todos if t['done'] == False ]
     open_todos.sort(key=lambda k: k['prio'], reverse=True)
-    return format_todos(open_todos)
+    return jsonify(open_todos)
 
 @app.route('/add', methods = ['GET', 'POST'])
 def add_task():
     r = request.json
     todo = {
+        "id": random.randint(1000,9999),
         "prio": r['prio'],
         "content": r['content'],
         "done": False,
@@ -59,11 +54,11 @@ def add_task():
     write_todos(todos)
     return Response('done\n', mimetype='text/plain')
 
-@app.route('/done/<content>')
-def mark_done(content):
+@app.route('/done/<ident>')
+def mark_done(ident):
     todos = get_todos()
     for t in todos:
-        if t['content'] == content:
+        if t['id'] == int(ident):
             t['done'] = True
             t['time']['edited'] = int(time.time())
     write_todos(todos)
